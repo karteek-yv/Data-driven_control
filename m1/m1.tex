@@ -1,5 +1,5 @@
 %\documentclass{beamer}
-%\RequirePackage[2020-02-02]{latexrelease}
+\RequirePackage[2020-02-02]{latexrelease}
 \documentclass[hyperref={pdfpagemode=FullScreen},aspectratio=169]{beamer}
 
 %    1610: 16:10
@@ -91,7 +91,8 @@
 \item Obtaining \textit{mathematical model} of the physical system is the first step.
 \item Such a model can be of ODE, PDE, difference equations, transfer functions, transfer matrices etc..
 \item The mathematical models are usually based on basic physical laws such as conservation laws, Newton's laws, Kirchhoff's laws, etc..
-\item An alternative way to obtain a model is to do experiments on physical system, obtain \textit{data} that can be used to find mathematical descriptions.
+\item An alternative way to obtain a model is to do experiments on physical system, obtain \textit{data} that can be used to find mathematical descriptions, and is called the \textit{data-driven approach} to control
+design.
 \item This method is called \textit{system identification}.
 \item The desired behaviour require the mathematical model to have certain properties (qualitative or quantitative), forming a design objective.
 \end{itemize}
@@ -106,7 +107,51 @@
 \item In the real world, a full-order model does not exist, and any description is an approximation.
 \item The advent of identification theory solved the problem of controlling complex time-varying plants using model-based control design.
 \item Modelling by physical laws or by identification from data, modelling errors are inescapable, and explicit quantification of modelling errors is practically impossible.
-\item This led to the development of the model-based approaches of fixed-parameter robust control and adaptive control system design
+\item This led to the development of the model-based approaches of fixed-parameter robust control and adaptive control system design.
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item The mathematical models derived from the physical laws have been effectively used in practical applications, provided that the following assumptions hold:
+\begin{itemize}\setlength\itemsep{1em}
+\item Accurately model the actual plant.
+\item Priori bounds on the noise and modelling errors are available.
+\end{itemize}
+\item The identified model can capture the main features of the plant, provided that
+\begin{itemize}
+\setlength\itemsep{1em}
+\item Compatibility of the selected model structure and parametrisation with the actual plant's characteristics is assumed.
+\item The experiment design is appropriate; for control problems, the selection of the input signal is in accordance with the actual plant's characteristics or the persistence of excitation (PE) condition.
+\end{itemize}
+\item  In summary, if an accurate model is unavailable, or the assumptions regarding the plant do not hold, the designed model-based controller, validated by simulations, can lead to an unstable closed-loop plant or poor closed-loop performance.
+\item Adaptive and robust control systems have successfully controlled many real-world and industrial plants. 
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item However, both strategies require many prior plant assumptions to be mandated by the theory.
+\item The alternative approach deals with the problem of synthesizing control laws directly on the basis of measured data.
+\item The combination of system identification and model-based control as described above is an instance of data-driven control design.
+\item Methods using this combination are often called \textit{indirect} methods of data-driven control, consisting of the two-step process of data-driven modelling (i.e., system identification) followed by model-based control.
+\item \textit{Direct} approaches focus on directly mapping data to controllers without an intermediate step of system identification.
+\item Both paradigms have different pros and cons.
+\item Identification might be expensive and the obtained model may not always be useful for the intended control design problem.
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item Unique system identification may be impossible, because the data are corrupted by noise and do not contain sufficient information
+\item Direct data-driven control design has the premise of being an end-to-end approach, requiring less expert knowledge.
+\item However, in comparison to the maturity of system identification, the theory of direct data-driven control is still very much under development.
+\item  In the 1990s and early 2000s, a number of direct data-driven control schemes emerged, including iterative feedback tuning (IFT) and virtual reference feedback tuning (VRFT).
+\item These methods both aim at using data to directly minimize a cost function of the control parameters, with the notable distinction that IFT is an iterative approach while VRFT is one-shot.
+\item 
 \end{itemize}
 \end{frame}
 %--------------------------------------------------
