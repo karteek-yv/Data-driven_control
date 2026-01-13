@@ -1,5 +1,5 @@
 %\documentclass{beamer}
-\RequirePackage[2020-02-02]{latexrelease}
+%\RequirePackage[2020-02-02]{latexrelease}
 \documentclass[hyperref={pdfpagemode=FullScreen},aspectratio=169]{beamer}
 
 %    1610: 16:10
@@ -102,7 +102,11 @@
 \setlength\itemsep{1em}
 \item Final step is to design a mathematical model of the controller.
 \item The above approach is called \textit{model-based control}.
-\item 
+\item Modelling errors due to un-modelled dynamics occur, especially when a complex high order system is represented by a low-order model.
+\item In the real world, a full-order model does not exist, and any description is an approximation.
+\item The advent of identification theory solved the problem of controlling complex time-varying plants using model-based control design.
+\item Modelling by physical laws or by identification from data, modelling errors are inescapable, and explicit quantification of modelling errors is practically impossible.
+\item This led to the development of the model-based approaches of fixed-parameter robust control and adaptive control system design
 \end{itemize}
 \end{frame}
 %--------------------------------------------------
