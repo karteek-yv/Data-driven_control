@@ -1,5 +1,5 @@
 %\documentclass{beamer}
-\RequirePackage[2020-02-02]{latexrelease}
+%\RequirePackage[2020-02-02]{latexrelease}
 \documentclass[hyperref={pdfpagemode=FullScreen},aspectratio=169]{beamer}
 
 %    1610: 16:10
@@ -28,6 +28,9 @@
 \usepackage{color}
 \usepackage{mathrsfs}
 \usepackage{tcolorbox}
+\usepackage{arydshln}
+\setlength{\dashlinedash}{4pt}
+\setlength{\dashlinegap}{4pt}
 
 \usepackage[nameinlink]{cleveref}
 \usepackage{aliascnt}
@@ -161,7 +164,99 @@ design.
 \setlength\itemsep{1em}
 \item The recent interest in direct data-driven simulation and tracking was motivated by the development of low cost sensing devices, and data were by now widely available.
 \item Increase in available computational power to analyse large datasets also fuelled that interest.
+\item Consider a linear time-invariant (LTI) system:
+\begin{subequations}\label{eq1}
+\begin{align}
+x(t+1) &= A_\text{true}x(t) + B_\text{true}u(t)\\
+y(t) &= C_\text{true}x(t) + D_\text{true}u(t)
+\end{align}
+\end{subequations}
+where $x(t)\in \mathbb{R}^{n_\text{true}}$ is the state, $u(t)\in \mathbb{R}^m$ is the input, $y(t)\in \mathbb{R}^p$ is the output.
+\item The true state-space dimension $n_\text{true}$ and the matrices $A_\text{true}$, $B_\text{true}$, $C_\text{true}$, and $D_\text{true}$ are assumed to be unknown.
+\item An upper bound $N$ on the state-space dimension is given, $N\geq n_\text{ture}$.
+\item The goal is to simulate and/or control the dynamics of \cref{eq1} using input-output data.
 \end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{0.5em}
+\item Consider a restricted input-output trajectory of interval $[0,T-1]$
+\item For a given integer $L\in [1,T]$, we define the Hankel matrix of depth $L$ as:
+\begin{align}\label{eq2}
+\begin{bmatrix}
+H_L(u_{[0,T-1]}) \\ 
+\hdashline 
+H_L(y_{[0,T-1]})
+\end{bmatrix} = \begin{bmatrix}
+u(0) & u(1) & \cdots & u(T-L) \\
+\vdots & \vdots & & \vdots \\
+u(L-1) & u(L) & \cdots & u(T-1) \\
+\hdashline 
+y(0) & y(1) & \cdots & y(T-L) \\
+\vdots & \vdots & & \vdots \\
+y(L-1) & y(L) & \cdots & y(T-1)
+\end{bmatrix}
+\end{align}
+\item By time-invariance of the system, each column of \cref{eq2} gives rise to a restricted input-output trajectory of \cref{eq1} on the time interval $[0, L-1]$.
+\item By linearity of the system, every linear combination of the columns of \cref{eq2} is also a restricted input-output trajectory on the time interval $[0, L-1]$.
+\item Every restricted input-output trajectory of length $L$ can be expressed as a linear combination of the columns of \cref{eq2}, assuming that the system in \cref{eq1} is controllable, and $u_{[0,T-1]}$ is persistently exciting of sufficiently high order.
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain,allowframebreaks]{}
+\begin{definition}
+Let $k\in [1,T]$ be an integer. The input $u_{[0,T-1]}$ is called persistently exciting of order $k$ if $H_k(u_{[0,T-1]})$ has full row rank.
+\end{definition}
+\begin{theorem}
+Assume that the pair  $\left(A_\text{true}, B_\text{true}\right)$ is controllable. Consider a restricted input-state-output trajectory $\left(u_{[0,T-1]} , x_{[0,T-1]} , y_{[0,T-1]}\right)$ of \cref{eq1}, where $T\geq1$. Let $L\in [1,T]$ be an integer. If the input $u_{[0,T-1]}$ is persistently exciting of order $N+L$, then the following statements hold:
+\end{theorem}
+\begin{enumerate}
+\item The matrix
+\begin{align}\label{eq3}
+\begin{bmatrix}
+X_{[0,T-L]} \\ 
+\hdashline 
+H_L(u_{[0,T-1]})
+\end{bmatrix} = \begin{bmatrix}
+x(0) & x(1) & \cdots & x(T-L) \\
+\hdashline 
+u(0) & u(1) & \cdots & u(T-L) \\
+\vdots & \vdots & & \vdots \\
+u(L-1) & u(L) & \cdots & y(T-1)
+\end{bmatrix}
+\end{align}
+has full rank.
+\item $\left(\bar{u}_{[0,L-1]}, \bar{y}_{[0,L-1]} \right)$ is a restricted input-output trajectory of \cref{eq1} on the time interval $[0,L-1]$ if and only if
+\begin{align}\label{eq4}
+\begin{bmatrix}
+\bar{u}_{[0,L-1]}\\
+\bar{y}_{[0,L-1]}
+\end{bmatrix} = \begin{bmatrix}
+H_L(u_{[0,T-1]}) \\
+H_L(y_{[0,T-1]})
+\end{bmatrix}g
+\end{align}
+for some vector $g\in \mathbb{R}^{T-L+1}$
+
+\item For $i\in \mathbb{Z}_+, \left(\bar{u}_{[i,i+L-1]}, \bar{y}_{[i,i+L-1]} \right)$ is a restricted input-output trajectory of \cref{eq1} on the time interval $[i, i+L-1]$ if and only if
+\begin{align}\label{eq5}
+\begin{bmatrix}
+\bar{u}_{[i,i+L-1]}\\
+\bar{y}_{[i,i+L-1]}
+\end{bmatrix} = \begin{bmatrix}
+H_L(u_{[0,T-1]}) \\
+H_L(y_{[0,T-1]})
+\end{bmatrix}g
+\end{align}
+for some $g\in \mathbb{R}^{T-L+1}$
+\end{enumerate}
+We note that the condition of persistency of excitation requires a sufficiently
+long trajectory,
+\begin{align}
+T\geq (m+1)(N+L)-1
+\end{align}
+
 \end{frame}
 %--------------------------------------------------
 \begin{frame}[plain]{}
