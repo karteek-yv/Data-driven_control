@@ -250,8 +250,7 @@ H_L(y_{[0,T-1]})
 \end{align}
 for some $g\in \mathbb{R}^{T-L+1}$
 \end{enumerate}
-We note that the condition of persistency of excitation requires a sufficiently
-long trajectory,
+We note that the condition of persistency of excitation requires a sufficiently long trajectory,
 \begin{align}
 T\geq (m+1)(N+L)-1
 \end{align}
@@ -260,7 +259,38 @@ T\geq (m+1)(N+L)-1
 \begin{frame}[plain]{}
 \begin{itemize}
 \setlength\itemsep{1em}
-\item 
+\item The confluence of big data and machine learning is driving a paradigm shift in the analysis and understanding of dynamical systems in science and engineering.
+\item In some applications such as climate science, finance, epidemiology, and neuroscience, data are abundant, however, the physical laws or governing equations are hard to find. 
+\item Consider a dynamical system of the form 
+\begin{align}
+\dot{x}(t)=f(x(t),t;\beta)
+\end{align}
+which can represent a wide class of systems (linear and nonlinear ).
+\item The general linear dynamics are of the form
+\begin{align}\label{eq8}
+\dot{x}=Ax
+\end{align}
+\item The solution of \cref{eq8} is given by,
+\begin{align}
+x(t+t_0) = e^{At}x(t_0)
+\end{align}
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item The dynamics are entirely characterized by the eigenvalues and eigenvectors of the matrix $A$.
+\item The spectral decomposition (eigendecomposition) of $A$ is given by:
+\begin{align}
+AT = T\Lambda
+\end{align}
+\item When $A$ has $n$ distinct eigenvalues, then $\Lambda$ is a diagonal matrix containing the eigenvalues $\lambda_j$ and $T$ is a matrix whose columns are the linearly independent eigenvectors $\xi_j$ associated with eigenvalues $\lambda_j$.
+\item The solution of \cref{eq8} can also be written as
+\begin{align}
+x(t+t_0) = Te^\Lambda T^{-1}x(t_0)
+\end{align}
+\item In the case of repeated eigenvalues, the matrix $\Lambda$ will consist of Jordan blocks
 \end{itemize}
 \end{frame}
 %--------------------------------------------------
