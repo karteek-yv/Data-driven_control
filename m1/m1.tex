@@ -1,5 +1,5 @@
 %\documentclass{beamer}
-\RequirePackage[2020-02-02]{latexrelease}
+%\RequirePackage[2020-02-02]{latexrelease}
 \documentclass[hyperref={pdfpagemode=FullScreen},aspectratio=169]{beamer}
 
 %    1610: 16:10
@@ -290,8 +290,131 @@ AT = T\Lambda
 \begin{align}
 x(t+t_0) = Te^\Lambda T^{-1}x(t_0)
 \end{align}
-\item In the case of repeated eigenvalues, the matrix $\Lambda$ will consist of Jordan blocks
+\item In the case of repeated eigenvalues, the matrix $\Lambda$ will consist of Jordan blocks.
+\item Nonlinearity remains a primary challenge in analyzing and controlling dynamical systems, giving rise to complex global dynamics.
+\item Linear systems may be completely characterized in terms of the spectral decomposition (i.e., eigenvalues and eigenvectors) of the matrix $A$.
 \end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item No such overarching framework exists for nonlinear systems.
+\item Nonlinear dynamical systems consider the geometry of subspaces of local linearizations around fixed points.
+\item It is often possible to apply  linear analysis techniques in a small neighborhood of a fixed point or periodic orbit.
+\item Even more central challenge arises from the lack of known governing equations for many modern systems of interest .
+\item In complex and realistic systems, such as are found in neuroscience, epidemiology, and ecology,  there is a basic lack of known physical laws.
+\item Traditionally, physical systems were analyzed by making ideal approximations and then deriving simple differential equation models.
+\item All models are approximations, and, with increasing complexity, these approximations often become suspect. 
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item Determining what is the correct model is becoming more subjective.
+\item There are also often latent variables that are relevant to the dynamics but may go unmeasured. \item Uncovering these hidden effects is a major challenge for data-driven methods.
+\item Identifying unknown dynamics from data and learning intrinsic coordinates that enable the linear representation of nonlinear systems are two of the most pressing goals of modern dynamical systems.
+\item \textbf{Dynamic mode decomposition} (DMD) is developed to identify spatio-temporal coherent structures from high-dimensional data in the fluid dynamics.
+\item DMD is based on proper orthogonal decomposition (POD), which utilizes the computationally efficient singular value decomposition (SVD).
+\item It scales well to provide effective dimensionality reduction in high-dimensional systems.
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item DMD provides a modal decomposition where each mode consists of spatially correlated structures that have the same linear behaviour in time.
+\item DMD provides not only dimensionality reduction in terms of a reduced set of modes, but also a model for how these modes evolve in time.
+\item DMD may be formulated as an algorithm to identify the best-fit linear dynamical system that advances high-dimensional measurements forward in time
+\item DMD is equally valid for experimental and numerical data, as it is not based on knowledge of the governing equations, but is instead based purely on measurement data.
+\item Each DMD mode is associated with a particular eigenvalue $\lambda = a+ib$, with a particular frequency of oscillation $b$ and growth or decay rate $a$.
+\item Exact DMD is based on the efficient and numerically well-conditioned singular value decomposition.
+\item DMD is inherently data-driven, and the first step is to collect a number of pairs of snapshots of the state of a system as it evolves in time.
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item These snapshot pairs may be denoted by $\{(x(t_k),x(t'_k))\}_{k=1}^{m}$, where $t'_k=t+\Delta t$, and the time-step $\Delta t$ is sufficiently small to resolve the highest frequencies in the dynamics. 
+\item These snapshots are then arranged into two data matrices, $X$ and $X'$:
+\begin{align}
+X&=\begin{bmatrix}
+| & | & &|\\
+x(t_1) & x(t_2) & \cdots & x(t_m)\\
+| & | & &|\\
+\end{bmatrix} \\
+X'&=\begin{bmatrix}
+| & | & &|\\
+x'(t_1) & x'(t_2) & \cdots & x'(t_m)\\
+| & | & &|\\
+\end{bmatrix}
+\end{align}
+\item The original formulations assumed uniform sampling in time, so that $t_k=k\Delta t$ and $t'_k=t_k+\Delta t = t_{k+1}$.
+\item If we assume uniform sampling in time, we will adopt the notation $x_k = x(k\Delta t)$.
+\item The DMD algorithm seeks the leading spectral decomposition (i.e., eigenvalues and eigenvectors) of the best-fit linear operator $A$ that relates the two snapshot matrices in time:
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{align}
+X'\approx AX
+\end{align}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item The best-fit operator A then establishes a linear dynamical system that best advances snapshot measurements forward in time. 
+\item If we assume uniform sampling in time, 
+\begin{align}
+x_{k+1} \approx Ax_k
+\end{align}
+\item Mathematically, the best-fit operator $A$ is defined as
+\begin{align}\label{eq16}
+A = \underset{A}{\text{argmin}} \lVert X'-AX\rVert_F = X'X^\dagger
+\end{align}
+\item Matrix $A$closely resembles the Koopman operator (shall be discussed later).
+\item Because $A$ is an approximate representation of the Koopman operator restricted to a finite-dimensional subspace of linear measurements, we are often interested in the eigenvectors $\Phi$ and eigenvalues $\Lambda$ of $A$.
+\begin{align}
+A = \Phi A \Phi^{-1}
+\end{align}
+
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item For a high dimensional state vector $x\in \mathbb{R}^n$, the matrix $A$ has $n^2$ elements, computing its spectral 	decomposition may be intractable.
+\item The DMD algorithm leverages dimensionality reduction to compute the dominant eigenvalues and eigenvectors of $A$ without requiring any explicit computations using $A$ directly.
+\item The pseudo-inverse $X^\dagger$ in \cref{eq16} is computed via the singular value decomposition of the matrix $X$.
+\item This matrix typically has far fewer columns than rows, i.e., $m \ll n$.
+\item There are at most $m$ non-zero singular values and corresponding singular vectors, and hence the matrix $A$ will have at most rank $m$. 
+\item Instead of computing $A$ directly, we compute the projection of $A$ onto these leading singular vectors, resulting in a small matrix $\tilde{A}$ of size at most $m \times m$.
+\item These approximate modes are in fact exact eigenvectors of the full $A$ matrix under certain conditions
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain,allowframebreaks]{DMD Algorithm}
+\begin{enumerate}
+\setlength\itemsep{1em}
+\item Compute the singular value decomposition of $X$
+\begin{align}
+X\approx \tilde{U}\tilde{\Sigma}\tilde{V}^*
+\end{align}
+where $\tilde{U} \in \mathbb{C}^{n\times r}$, $\tilde{\Sigma} \in \mathbb{C}^{r\times r}$, and $\tilde{V} \in \mathbb{C}^{m\times r}$, and $r\leq m$ denotes either the exact or the approximate rank of the data matrix $X$.
+\item[] Choosing the approximate rank $r$ is one of the most important and subjective steps in DMD, and in dimensionality reduction in general.
+\item[] The columns of the matrix $\tilde{U}$ are also known as POD modes, and they satisfy $\tilde{U}*\tilde{U}=I$.
+\item[] Similarly, the columns of $\tilde{V}$ are orthonormal and satisfy $\tilde{V}*\tilde{V}=I$.
+\item According to \cref{eq16}, the full matrix $A$ may be obtained by computing the pseudo-inverse of $X$.
+\begin{align}
+A=X'\tilde{V}\tilde{\Sigma}^{-1}\tilde{U}^*
+\end{align}
+\item[] We are only interested in the leading $r$ eigenvalues and eigenvectors of $A$, and we may thus project $A$ onto the POD modes in $U$:
+\begin{align}
+\tilde{A}=\tilde{U}^*A\tilde{U} = \tilde{U}^*X'\tilde{V}\tilde{\Sigma}^{-1}
+\end{align}
+\item[] Reduced matrix $\tilde{A}$ has the same non-zero eigen-values as the full matrix $A$.
+\end{enumerate}
 \end{frame}
 %--------------------------------------------------
 \begin{frame}[plain]{}
