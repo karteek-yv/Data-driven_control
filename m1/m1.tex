@@ -1,5 +1,5 @@
 %\documentclass{beamer}
-%\RequirePackage[2020-02-02]{latexrelease}
+\RequirePackage[2020-02-02]{latexrelease}
 \documentclass[hyperref={pdfpagemode=FullScreen},aspectratio=169]{beamer}
 
 %    1610: 16:10
@@ -413,7 +413,18 @@ A=X'\tilde{V}\tilde{\Sigma}^{-1}\tilde{U}^*
 \begin{align}
 \tilde{A}=\tilde{U}^*A\tilde{U} = \tilde{U}^*X'\tilde{V}\tilde{\Sigma}^{-1}
 \end{align}
-\item[] Reduced matrix $\tilde{A}$ has the same non-zero eigen-values as the full matrix $A$.
+\item[] Reduced matrix $\tilde{A}$ has the same non-zero eigenvalues as the full matrix $A$.
+\item[] We need only compute the reduced $\tilde{A}$, without working with the high-dimensional $A$.
+\item[] The $\tilde{A}$ defines a linear model for the dynamics of the vector of POD coefficients $\tilde{x}$.
+\begin{align}
+\tilde{x}_{k+1} = \tilde{A}\tilde{x}_k
+\end{align}
+\item[] Matrix $\tilde{U}$ provides a map to reconstruct the full state $x$ from the reduced state $\tilde{x}$.
+\item The spectral decomposition of $\tilde{A}$ is given by
+\begin{align}
+\tilde{A} = W\Lambda W^{-1}
+\end{align}
+\item[] The entries of the diagonal matrix $\Lambda$ are the DMD eigenvalues, which also correspond to eigenvalues of the full $A$ matrix.
 \end{enumerate}
 \end{frame}
 %--------------------------------------------------
