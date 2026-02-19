@@ -1,5 +1,5 @@
 %\documentclass{beamer}
-%\RequirePackage[2020-02-02]{latexrelease}
+\RequirePackage[2020-02-02]{latexrelease}
 \documentclass[hyperref={pdfpagemode=FullScreen},aspectratio=169]{beamer}
 
 %    1610: 16:10
@@ -428,6 +428,17 @@ A=X'\tilde{V}\tilde{\Sigma}^{-1}\tilde{U}^*
 \item[] The columns of $W$ are eigenvectors of $\tilde{A}$, and provide a coordinate transformation that diagonalizes the matrix.
 \item[] These columns may be thought of as linear combinations of POD mode amplitudes.
 \item[] They behave linearly with a single temporal pattern given by $\lambda$.
+\item The high-dimensional DMD modes $\Phi$ are reconstructed using the eigenvectors $W$ of the reduced system and the time-shifted snapshot matrix $X'$ according to
+\begin{align}
+\Phi = X'\tilde{V}\tilde{\Sigma}^{-1}W
+\end{align}
+\item[] These DMD modes are eigenvectors of the high-dimensional $A$ matrix corresponding to the eigenvalues in $\Lambda$.
+\begin{align}
+A\Phi &= (X'\tilde{V}\tilde{\Sigma}^{-1}\underbrace{\tilde{U}^*)(X'\tilde{V}\tilde{\Sigma}^{-1}}_{\tilde{A}}W)\nonumber \\
+&=X'\tilde{V}\tilde{\Sigma}^{-1}\tilde{A}W \nonumber \\
+&= X'\tilde{V}\tilde{\Sigma}^{-1}W\Lambda \nonumber\\
+&= \Phi \Lambda
+\end{align}
 \end{enumerate}
 \end{frame}
 %--------------------------------------------------
