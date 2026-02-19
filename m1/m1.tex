@@ -1,5 +1,5 @@
 %\documentclass{beamer}
-\RequirePackage[2020-02-02]{latexrelease}
+%\RequirePackage[2020-02-02]{latexrelease}
 \documentclass[hyperref={pdfpagemode=FullScreen},aspectratio=169]{beamer}
 
 %    1610: 16:10
@@ -425,7 +425,9 @@ A=X'\tilde{V}\tilde{\Sigma}^{-1}\tilde{U}^*
 \tilde{A} = W\Lambda W^{-1}
 \end{align}
 \item[] The entries of the diagonal matrix $\Lambda$ are the DMD eigenvalues, which also correspond to eigenvalues of the full $A$ matrix.
-\item[] 
+\item[] The columns of $W$ are eigenvectors of $\tilde{A}$, and provide a coordinate transformation that diagonalizes the matrix.
+\item[] These columns may be thought of as linear combinations of POD mode amplitudes.
+\item[] They behave linearly with a single temporal pattern given by $\lambda$.
 \end{enumerate}
 \end{frame}
 %--------------------------------------------------
