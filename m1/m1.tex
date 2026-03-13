@@ -1,5 +1,5 @@
 %\documentclass{beamer}
-%\RequirePackage[2020-02-02]{latexrelease}
+\RequirePackage[2020-02-02]{latexrelease}
 \documentclass[hyperref={pdfpagemode=FullScreen},aspectratio=169]{beamer}
 
 %    1610: 16:10
@@ -466,6 +466,59 @@ where $b_k$ is the initial amplitude of each mode, $\Phi$ is the matrix whose co
 \item The eigenvectors $\phi_k$ are the same size as the state $x$, and $b$ is a vector of the coefficients $b_k$.
 \item It is possible to interpret \cref{eq25} as the least-square fit, or regression, of a best-fit linear dynamical system $x_{k_1 = Ax_k}$ for the data.
 \item The matrix $A$ is constructed so that $\lVert x_{k+1}-Ax_k \rVert_2$ is minimized across all snapshots.
+\item  DMD is particularly sensitive to the effects of noisy data, and it has been shown that significant and systematic biases are introduced into the eigenvalue distribution.
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item Although increased sampling decreases the variance of the eigenvalue distribution, it does not
+remove the bias.
+\item This noise sensitivity has motivated several alternative optimization algorithms for DMD to improve the quality and performance of DMD over the standard optimization in \cref{eq16}, which is a least-squares fitting procedure involving the Frobenius norm.
+\item These algorithms include the total least-squares DMD, forward–backward DMD, variable projection, and robust principal component analysis.
+\item One of the simplest ways to remove the systematic bias of the DMD algorithm is by computing it both forward and backward in time and averaging the equivalent matrices.
+\item The two following approximations are considered
+\begin{align}
+X'\approx A_1X, \;\; X \approx A_2 X'
+\end{align}
+where $A_2^{-1} = A_1$ for noise-free data.
+\item $A_2$ is the backward time-step mapping from $t_{k+1}$ to $t_k$.
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item The forward and backward-time matrices are then averaged, to remove the systematic bias due to measurement noise:
+\begin{align}
+A= \frac{1}{2}(A_1+A_2^{-1})
+\end{align}
+where \cref{eq16} can be used compute both the forward and backward mappings $A_1$ and $A_2$
+\begin{align}
+A = \underset{A}{\text{argmin}} \frac{1}{2}(\lVert X'-AX\rVert_F  + \lVert X-A^{-1}X'\rVert_F)
+\end{align}
+which is highly nonlinear and non-convex due to the inverse $A^{-1}$.
+\item An improved optimization framework was developed as
+\begin{align}
+A = \underset{A_1,A_2}{\text{argmin}} \frac{1}{2}(\lVert X'-A_1X\rVert_F  + \lVert X-A_2X'\rVert_F); \; \text{s.t}\;\; A_1A_2 = I, \; A_2A_1=I
+\end{align}
+\item DMD is able to accurately identify an approximate linear model for dynamics that are linear, periodic, or quasi-periodic.
+\item  DMD is unable to capture a linear dynamical system model with essential nonlinear features, such as multiple fixed points, unstable periodic orbits, or chaos.
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item For example, DMD will fail to yield a reasonable linear model for the chaotic Lorenz system, and it also will not capture important features of the linear portion of the Lorenz model.
+\item The sparse identification of nonlinear dynamics (SINDy) and linear and nonlinear disambiguation optimization (LANDO) algorithms may be considered nonlinear dynamics.
+\item  SINDy often faces scaling issues for high-dimensional systems that do not admit a low-dimensional subspace.
+\item It may be applied to a broad range of applications, including fluid dynamics, video processing, epidemiology, neuroscience, finance, etc..
+\item It can be used to obtain reduced-order models (ROMs) of high-dimensional complex systems.
+\item In statistics and econometrics, and in particular in time-series analysis, \textbf{autoregressive moving average (ARMA)} models and the generalized \textbf{autoregressive integrated moving average (ARIMA)} models are commonly used.
+\item These models are fitted to time-series data either to better understand the data or to predict future points in the series.
+\item 
 \end{itemize}
 \end{frame}
 %--------------------------------------------------
