@@ -1,5 +1,5 @@
 %\documentclass{beamer}
-\RequirePackage[2020-02-02]{latexrelease}
+%\RequirePackage[2020-02-02]{latexrelease}
 \documentclass[hyperref={pdfpagemode=FullScreen},aspectratio=169]{beamer}
 
 %    1610: 16:10
@@ -449,6 +449,29 @@ A\Phi &= (X'\tilde{V}\tilde{\Sigma}^{-1}\underbrace{\tilde{U}^*)(X'\tilde{V}\til
 \item To find a dynamic mode of $A$ associated with a zero eigenvalue $\lambda_k=0$, the exact formulation \cref{eq23} may be used if $\phi = X'\tilde{V}\tilde{\Sigma}^{-1}w \neq 0$.
 \item Otherwise, the projected DMD formulation $\phi = \tilde{U}w$ should be used. 
 \item With the low-rank approximations of both the eigenvalues and the eigenvectors in hand, the projected future solution can be constructed for all time in the future.
+\item The DMD method can be viewed as computing, from the experimental data, the eigenvalues and eigenvectors (low-dimensional modes) of a finite-dimensional linear model that approximates the infinite-dimensional Koopman operator.
+\item This is fundamentally different than linearizing the dynamics.
+\item The relation between the continuous time and discrete time eigenvalues is $\displaystyle \omega = \frac{\ln{\lambda}}{\Delta t}$
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item Then
+\begin{align} \label{eq25}
+x(t) \approx \sum_{k=1}^{r}\phi_k \exp({\omega_k t})b_k=\Phi \exp({\Omega t})b
+\end{align}
+where $b_k$ is the initial amplitude of each mode, $\Phi$ is the matrix whose columns are the DMD eigenvectors $\phi_k$, and $\Omega=\text{diag}(\omega)$ is a diagonal matrix whose entries are the eigenvalues $\omega_k$.
+\item The eigenvectors $\phi_k$ are the same size as the state $x$, and $b$ is a vector of the coefficients $b_k$.
+\item It is possible to interpret \cref{eq25} as the least-square fit, or regression, of a best-fit linear dynamical system $x_{k_1 = Ax_k}$ for the data.
+\item The matrix $A$ is constructed so that $\lVert x_{k+1}-Ax_k \rVert_2$ is minimized across all snapshots.
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
 \item 
 \end{itemize}
 \end{frame}
