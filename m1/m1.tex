@@ -517,8 +517,32 @@ A = \underset{A_1,A_2}{\text{argmin}} \frac{1}{2}(\lVert X'-A_1X\rVert_F  + \lVe
 \item It may be applied to a broad range of applications, including fluid dynamics, video processing, epidemiology, neuroscience, finance, etc..
 \item It can be used to obtain reduced-order models (ROMs) of high-dimensional complex systems.
 \item In statistics and econometrics, and in particular in time-series analysis, \textbf{autoregressive moving average (ARMA)} models and the generalized \textbf{autoregressive integrated moving average (ARIMA)} models are commonly used.
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
 \item These models are fitted to time-series data either to better understand the data or to predict future points in the series.
-\item 
+\item ARIMA models are often applied to data that shows evidence of non-stationarity, where an initial differencing step (corresponding to the ``integrated" part of the model) can be applied to reduce the nonstationarity.
+\item Such models are characterized by a number of key parameters, one of them being the number of past time points used to forecast a future point, similar to what DMD accomplishes.
+\item DMD links each time snapshot directly to the previous time snapshot.
+\item  If multiple time series are used, which would be the case for DMD, then ARIMA can be generalized to a vector framework, the VARIMA (vector ARIMA) model.
+\item Sometimes a seasonal effect is exemplified in the time series, in which case oscillatory behaviour should be modelled.
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item For such cases, it is generally common to use the SARIMA (seasonal ARIMA) model instead of
+increasing the order of the AR or MA part of the model.
+\item In the DMD architecture, seasonal variations are automatically included.
+\item DMD can be thought of as taking advantage of both the vector nature of the data and any oscillatory (seasonal) variations. 
+\item Recent advances in machine learning, compressed sensing, and data science have resulted in powerful nonlinear techniques in system identification. 
+\item Genetic programming, also known as symbolic regression, has provided a method of determining nonlinear dynamical systems from measurement data.
+\item The sparse identification of nonlinear dynamics (SINDy) algorithm uses sparse regression [280] in a nonlinear function space to determine the relevant terms in the dynamics.
+\item This method has recently been connected to DMD and the Koopman operator
 \end{itemize}
 \end{frame}
 %--------------------------------------------------
