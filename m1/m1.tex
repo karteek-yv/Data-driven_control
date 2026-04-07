@@ -1,5 +1,5 @@
 %\documentclass{beamer}
-\RequirePackage[2020-02-02]{latexrelease}
+%\RequirePackage[2020-02-02]{latexrelease}
 \documentclass[hyperref={pdfpagemode=FullScreen},aspectratio=169]{beamer}
 
 %    1610: 16:10
@@ -548,21 +548,92 @@ increasing the order of the AR or MA part of the model.
 %--------------------------------------------------
 \begin{frame}[plain]{Sparse Identification of Nonlinear Dynamics (SINDy)}
 \begin{itemize}
-\setlength\itemsep{1em}
-\item Simultaneously identifying the nonlinear structure and parameters of a model from data is considerably more challenging, as there are combinatorially many possible model structures.
+\setlength\itemsep{0.25em}
+\item Discovering dynamical systems models from data is a central challenge in mathematical
+physics.
+\item This process relied on a combination of high-quality measurements and expert intuition.
+\item With abundance in data and computational power, automated discovery of governing equations and dynamical systems is new and exciting.
+\item Simultaneously identifying the nonlinear structure and parameters of a model from data is considerably more challenging.
+\item There are combinatorially many possible model structures.
 \item The sparse identification of nonlinear dynamics (SINDy) algorithm bypasses the intractable combinatorial search through all possible model structures.
 \item For a dynamical system of the form
-\begin{align}
-\frac{d}{dx}x=f(x)
+\begin{align}\label{eq30}
+\frac{d}{dt}\mathbf{x}=\mathbf{f}(\mathbf{x})
 \end{align}
-have dynamics $f$ with only a few active terms in the space of possible right-hand side functions
+have dynamics $\mathbf{f}$ with only a few active terms in the space of possible right-hand side functions.
+
 \end{itemize}
 \end{frame}
 %--------------------------------------------------
 \begin{frame}[plain]{}
 \begin{itemize}
 \setlength\itemsep{1em}
-\item 
+\item Approximate $f$ by a generalized linear model
+\begin{align}
+\mathbf{f}(\mathbf{x}) \approx \sum_{k=1}^{p} \theta_k(\mathbf{x})\xi_k = \mathbf{\Theta}(\mathbf{x})\boldsymbol{\xi}
+\end{align}
+with the fewest non-zero terms in $\boldsymbol{\xi}$ as possible.
+\item Solve for the relevant terms that are active in the dynamics using sparse regression that
+penalizes the number of terms in the dynamics and scales well to large problems.
+\item Time-series data is collected from \cref{eq30} and formed into a data matrix:
+\begin{align}
+\mathbf{X} = \begin{bmatrix} \mathbf{x}(t_1) & \mathbf{x}(t_2) & \cdots & \mathbf{x}(t_m) \end{bmatrix}^T
+\end{align}
+\item A similar matrix of derivatives is formed:
+\begin{align}
+\dot{\mathbf{X}} = \begin{bmatrix} \dot{\mathbf{x}}(t_1) & \dot{\mathbf{x}}(t_2) & \cdots & \dot{\mathbf{x}}(t_m) \end{bmatrix}^T
+\end{align}
+ this may be computed directly from the data in $\mathbf{X}$
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item It is also possible to formulate the SINDy algorithm for discrete-time systems $\mathbf{x}_{k+1} = \mathbf{F}(\mathbf{x}_k)$ to avoid derivatives entirely..
+\item A library of candidate nonlinear functions $\mathbf{\Theta}$ may be constructed from the data in $\mathbf{X}$.
+\begin{align}
+\mathbf{\Theta}(\mathbf{X}) = \begin{bmatrix} \mathbf{1} & \mathbf{X} & \mathbf{X}^2 & \cdots & \mathbf{X}^d & \cdots & \sin(\mathbf{X}) & \cdots \end{bmatrix}
+\end{align}
+\item The matrix $\mathbf{X}^d$ denotes a matrix with column vectors given by all possible time series
+of $d$th-degree polynomials in the state $\mathbf{x}$.
+\item In terms of data matrices
+\begin{align}
+\dot{\mathbf{X}} = \mathbf{\Theta}(\mathbf{X})\mathbf{\Xi}
+\end{align}
+\item Each column $\boldsymbol{\xi}_k$ in $\mathbf{\Xi}$ is a vector of coefficients determining the active terms in the $k$th row in \cref{eq30}.
+\item A model with minimum number of non-zero terms in $\mathbf{\Xi}$ may be identified using a convex $l_1$-regularized sparse regression:
+\begin{align}
+\boldsymbol{\xi}_k = \underset{\boldsymbol{\xi}_k'}{\text{argmin}} \|\dot{\mathbf{X}}_k - \boldsymbol{\Theta}(\mathbf{X})\boldsymbol{\xi}_k'\|_2 + \lambda\|\boldsymbol{\xi}_k'\|_1
+\end{align}
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item Here, $\dot{\mathbf{X}}_k$ is the $k$th column of $\mathbf{X}$, and $\lambda$ is a sparsity-promoting knob.
+\item Sparse regression, such as the Least Absolute Shrinkage and Selection Operator (LASSO) or the sequential thresholded least-squares (STLS) algorithm used in SINDy, improves the numerical robustness of this identification for noisy over-determined problems.
+\item Check the example codes for identification of a Lorenz system with STLS.
+\item SINDy regression is a parsimonious model that includes only the most important terms required, it is a convex procedure.
+\item The alternative approach, involves regression onto every possible sparse nonlinear
+structure.
+\item It constitutes an intractable brute-force search through the combinatorially many candidate model forms. 
+\item SINDy bypasses this combinatorial search with modern convex optimization and machine learning.
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item For discrete-time dynamics, if $\mathbf{\Theta}(\mathbf{X})$ consists only of linear terms, and if we remove the sparsity-promoting term by setting $\lambda = 0$, then this algorithm reduces to the DMD.
+\item If a least-squares regression is used, as in DMD, then even a small amount of measurement error or numerical round-off will lead to every term in the library being active in the dynamics, which is non-physical.
+\item SINDy architecture can identify parsimonious models that contain only the required nonlinear terms, resulting in interpretable models that avoid overfitting.
+\item The applications include reduced-order models of fluid dynamics, turbulence closures, nonlinear optics, systems with stochastic dynamics and so on. 
+\item Because SINDy is formulated in terms of linear regression in a nonlinear library, it is
+highly extensible. 
+\item For actuated systems, SINDy has been generalized to include inputs and control, and these models are highly effective for model predictive control.
+
 \end{itemize}
 \end{frame}
 %--------------------------------------------------
