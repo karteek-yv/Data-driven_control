@@ -633,7 +633,44 @@ structure.
 \item Because SINDy is formulated in terms of linear regression in a nonlinear library, it is
 highly extensible. 
 \item For actuated systems, SINDy has been generalized to include inputs and control, and these models are highly effective for model predictive control.
-
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{Koopman Operator Theory}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item In Koopman operator approach,  nonlinear dynamics are represented in terms of an infinite-dimensional linear operator acting on the space of all possible measurement functions of the system.
+\item Finding tractable finite-dimensional representations of the Koopman operator is closely related to finding effective coordinate transformations in which the nonlinear dynamics appear linear.
+\item Consider a generic system
+\begin{align}
+\frac{d}{dt}\mathbf{x}(t) = \mathbf{f}(\mathbf{x}(t))
+\end{align}
+where $\mathbf{x} \in \mathcal{X} \subseteq \mathbb{R}^n$ is the state of the system, $\mathbf{f}$ is a vector field describing the dynamics.
+\item In general, the dynamics may also depend on time $t$, parameters $\beta$ , and external
+actuation or control $\mathbf{u}(t)$.
+\item We omit these here for simplicity, they will be considered later.
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item A major goal of modern dynamical systems is to find a new vector of coordinates $\mathbf{z}$ such that either
+\begin{align}
+\mathbf{x} = \varphi(\mathbf{z}) \;\; \text{or} \;\; \mathbf{z}=\varphi(\mathbf{x})
+\end{align}
+where the dynamics are simplified or, ideally, linearized:
+\begin{align}
+\frac{d}{dt}\mathbf{z} = \mathbf{L}\mathbf{z}
+\end{align}
+\item In these new linearizing coordinates, the dynamics of $\mathbf{z}$ are entirely determined by the matrix $\mathbf{L}$.
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item 
 \end{itemize}
 \end{frame}
 %--------------------------------------------------
