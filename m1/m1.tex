@@ -1,5 +1,5 @@
 %\documentclass{beamer}
-\RequirePackage[2020-02-02]{latexrelease}
+%\RequirePackage[2020-02-02]{latexrelease}
 \documentclass[hyperref={pdfpagemode=FullScreen},aspectratio=169]{beamer}
 
 %    1610: 16:10
@@ -663,9 +663,227 @@ where the dynamics are simplified or, ideally, linearized:
 \begin{align}
 \frac{d}{dt}\mathbf{z} = \mathbf{L}\mathbf{z}
 \end{align}
-\item In these new linearizing coordinates, the dynamics of $\mathbf{z}$ are entirely determined by the matrix $\mathbf{L}$.
+\item In these new linearising coordinates, the dynamics of $\mathbf{z}$ are entirely determined by the matrix $\mathbf{L}$.
+\item We typically have access to measurement data of our system, discretely sampled in time. 
+\item This data is governed by the discrete-time dynamical system
+\begin{align}
+\mathbf{x}_{k+1} = \mathbf{F}(\mathbf{x}_k)
+\end{align}
+where $\mathbf{x}_k = \mathbf{x}(t_k) = \mathbf{x}(k\Delta t)$.
+\item The goal is still to find a linearising coordinate transform so that $\mathbf{z}_{k+1} = \mathbf{K}\mathbf{z}_k$, where the matrix $\mathbf{K}$ is the discrete-time analogue of the continuous-time matrix $\mathbf{L}$.
 \end{itemize}
 \end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item These coordinates are given by eigenfunctions of the discrete-time Koopman operator, $\mathcal{K}$,  which advances a measurement function $g(\mathbf{x})$ of the state forward in time through the dynamics:
+\begin{align}
+\mathcal{K}g(\mathbf{x}_k) := g(\mathbf{F}(\mathbf{x}_k)) = g(\mathbf{x}_{k+1})
+\end{align}
+\item For an eigenfunction $\varphi$ of $\mathcal{K}$, corresponding to an eigenvalue $\lambda$, this becomes
+\begin{align}
+\mathcal{K}\varphi(\mathbf{x}_k) = \lambda\varphi(\mathbf{x}_k) = \varphi(\mathbf{x}_{k+1}).
+\end{align}
+\item The coordinates $\varphi$ and the matrix $\mathbf{L}$ are closely related to the continuous-time 
+analogue $\mathcal{L}$ of the discrete-time Koopman operator $\mathcal{K}$. 
+\item Eigenfunctions $\varphi_j$ of $\mathcal{L}$ provide such a linearizing coordinate system, and the matrix $\mathbf{L}$ is obtained by restricting the operator $\mathcal{L}$ to the span of these functions.
+\item Spectral theory provides a complete description of the dynamics in terms of the eigenstructure of $\mathbf{L}$. 
+\item Thus, transforming the system into coordinates where the dynamics are linear dramatically simplifies all downstream analysis and control efforts.
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item Consider the nonlinear Duffing system $\ddot{x}=x-x^3$ with  state-space representation
+\begin{align}
+\dot{x}_1 &= x_2 \\
+\dot{x}_2 &= x_1 - x_1^3
+\end{align}
+\item It has three fixed points: a saddle point at the origin with Jacobian eigenvalues $\lambda_{\pm}=\pm 1$ and two centres at $(x_1,x_2)=(\pm 1,0)$ with eigenvalues $\pm \sqrt{2}i$.
+\item The Duffing oscillator is a weakly nonlinear system, where fixed points may be identified and linearized about, and the stable and unstable manifolds emanating from these points organize the entire phase space structure.
+\item The Duffing oscillator exhibits a continuous spectrum of frequencies, as can be seen by increasing the energy from one of the center fixed points, where the frequency is determined by the linearized eigenvalues, up to the saddle point, where the period of oscillation tends toward infinity.
+\item The Koopman operator can provide a system of coordinate transformations that extend the local neighborhoods where a linear model is valid to the full basin around them, as shown in fig b.
+\item Systems that possess multiple simple invariant solutions cannot be represented by a
+Koopman expansion that is globally uniformly convergent, implying that any choice
+of a representation of the Koopman operator $\mathcal{K}$ in a system of coordinates may not
+hold everywhere, for any given observable of interest.
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{figure}
+\includegraphics[scale=0.3]{fig1.jpg}\label{fig1}
+\caption{Different Koopman perspectives for the Duffing oscillator.}
+\end{figure}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item The Hamiltonian energy function $H = x_2^2 - \frac{x_1^2}{2} + \frac{x_1^4}{4}$ is a Koopman eigenfunction for this conservative system, with eigenvalue $\lambda = 0$, as shown in fig c.
+\item In fig d, the Koopman operator establishes a change of coordinates, in space and time, in which the original nonlinear trajectories become linear. 
+\item When obtaining these approximate coordinate systems from data, only approximately periodic dynamics will persist for long times. 
+\item The Koopman operator advances measurement functions of the state with the flow of the
+dynamics. 
+\item We consider real-valued measurement functions $g \colon \mathbf{M} \to \mathbb{R}$, which are elements of an infinite-dimensional Hilbert space.
+\item The Koopman operator $\mathcal{K}_t$ is an infinite-dimensional linear operator that acts on measurement functions $g$ (commonly known as observables) as
+\begin{align}
+\mathcal{K}_t g = g \circ \mathbf{F}_t
+\end{align}
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item For a discrete-time system with time-step $\Delta t$, this becomes
+\begin{align}
+\mathcal{K}_{\Delta t} g(\mathbf{x}_k) = g(\mathbf{F}_{\Delta t}(\mathbf{x}_k)) = g(\mathbf{x}_{k+1}).
+\end{align}
+\item The Koopman operator defines an infinite-dimensional linear dynamical system that advances the observation of the state $g_k = g(\mathbf{x}_k)$ to the next time-step:
+\begin{align}
+g(\mathbf{x}_{k+1}) = \mathcal{K}_{\Delta t} g(\mathbf{x}_k)
+\end{align}
+\item The Koopman operator is linear, a property that is inherited from the linearity of the addition operation in function spaces:
+\begin{align}
+    \mathcal{K}_t(\alpha_1 g_1(\mathbf{x}) + \alpha_2 g_2(\mathbf{x})) &= \alpha_1 g_1(\mathbf{F}_t(\mathbf{x})) + \alpha_2 g_2(\mathbf{F}_t(\mathbf{x})) \\
+    &= \alpha_1 \mathcal{K}_t g_1(\mathbf{x}) + \alpha_2 \mathcal{K}_t g_2(\mathbf{x})
+\end{align}
+\item For sufficiently smooth dynamical systems, it is also possible to define the continuous-time analogue of the Koopman dynamical system
+\begin{align}
+\frac{\mathrm{d}}{\mathrm{d}t} g = \mathcal{K} g
+\end{align}
+\item The operator $\mathcal{K}$ is the infinitesimal generator of the one-parameter family of transformations $\mathcal{K}_t$.
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item It is defined by its action on an observable function $g$:
+\begin{align}
+\mathcal{K}g = \lim_{t \to 0} \frac{\mathcal{K}_t g - g}{t} = \lim_{t \to 0} \frac{g \circ \mathbf{F}_t - g}{t}
+\end{align} 
+\item It is important to note that the original state $\mathbf{x}$ may be the observable, and the infinite-dimensional operator $\mathcal{K}_t$ will advance this function.
+\item The simple representation of the observable $g = x$ in a chosen basis for Hilbert space may become arbitrarily complex once iterated through the dynamics.
+\item Finding a representation for $\mathcal{K}\mathbf{x}$ may not be simple or straightforward.
+\item Instead of capturing the evolution of all measurement functions in a Hilbert space, applied Koopman analysis attempts to identify key measurement functions that evolve linearly with the flow of the dynamics.
+\item Eigenfunctions of the Koopman operator provide just such a set of special measurements that behave linearly in time.
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item A discrete-time Koopman eigenfunction $\varphi(\mathbf{x})$ corresponding to eigenvalue $\lambda$ satisfies
+\begin{align}
+\varphi(\mathbf{x}_{k+1}) = \mathcal{K}_{\Delta t}\varphi(\mathbf{x}_k) = \lambda\varphi(\mathbf{x}_k)
+\end{align}
+\item In continuous time, a Koopman eigenfunction $\varphi(\mathbf{x})$ satisfies
+\begin{align}
+\frac{\mathrm{d}}{\mathrm{d}t}\varphi(\mathbf{x}) = \mathcal{K}\varphi(\mathbf{x}) = \lambda\varphi(\mathbf{x})
+\end{align}
+\item Obtaining Koopman eigenfunctions from data or from analytic expressions is a central applied challenge in modern dynamical systems.
+\item Discovering these eigenfunctions enables globally linear representations of strongly nonlinear systems.
+\item Applying the chain rule to the time derivative of the Koopman eigenfunction $\varphi(\mathbf{x})$ yields
+\begin{align}
+\frac{\mathrm{d}}{\mathrm{d}t}\varphi(\mathbf{x}) = \nabla\varphi(\mathbf{x}) \cdot \dot{\mathbf{x}} = \nabla\varphi(\mathbf{x}) \cdot \mathbf{f}(\mathbf{x})
+\end{align}
+\item This results in a partial differential equation for the eigenfunction $\varphi(\mathbf{x})$:
+\begin{align}
+\nabla\varphi(\mathbf{x}) \cdot \mathbf{f}(\mathbf{x}) = \lambda\varphi(\mathbf{x})
+\end{align}
+
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item With this nonlinear PDE, it is possible to approximate the eigenfunctions, either by solving for the Laurent series or with data via regression,
+\item This formulation assumes that the dynamics are both continuous and differentiable.
+\item The discrete-time dynamics are more general, although in many examples the continuous-time dynamics have a simpler representation than the discrete-time map for long times.
+\item The simple Lorenz system has a simple continuous-time representation, yet is generally unrepresentable for even moderately long discrete-time updates.
+\item A set of Koopman eigenfunctions may be used to generate more eigenfunctions
+\begin{align}
+    \mathcal{K}_t(\varphi_1(\mathbf{x})\varphi_2(\mathbf{x})) &= \varphi_1(\mathbf{F}_t(\mathbf{x}))\varphi_2(\mathbf{F}_t(\mathbf{x})) \nonumber \\
+    &= \lambda_1\lambda_2\varphi_1(\mathbf{x})\varphi_2(\mathbf{x})
+\end{align}
+\item Corresponding to a new eigenvalue $\lambda_1\lambda_2$ given by the product of the two eigenvalues of $\varphi_1(\mathbf{x})$ and $\varphi_2(\mathbf{x})$.
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item In continuous time, the relationship becomes
+\begin{align}
+    \mathcal{K}(\varphi_1\varphi_2) &= \frac{\mathrm{d}}{\mathrm{d}t}(\varphi_1\varphi_2) \nonumber \\
+    &= \dot{\varphi}_1\varphi_2 + \varphi_1\dot{\varphi}_2 \nonumber \\
+    &= \lambda_1\varphi_1\varphi_2 + \lambda_2\varphi_1\varphi_2 \nonumber \\
+    &= (\lambda_1 + \lambda_2)\varphi_1\varphi_2
+\end{align}
+\item Depending on the dynamical system, there may be a finite set of generator eigenfunction elements that may be used to construct all other eigenfunctions.
+\item The corresponding eigenvalues similarly form a lattice, based on the product $\lambda_1 \lambda_2$ or sum $\lambda_1 + \lambda_2$ , depending on whether the dynamics are in discrete time or continuous time. 
+\item Given a linear system $\dot{x} = \lambda x$, then $\varphi(x) = x$ is an eigenfunction with eigenvalue $\lambda$.
+\item $\varphi^{\alpha} = x^{\alpha}$ is also an eigenfunction with eigenvalue $\alpha\lambda$ for any $\alpha$.
+\item If the continuous-time eigenvalues are given by $\lambda$, then the corresponding discrete-time eigenvalues are given by $e^{\lambda t}$.
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item The above eigenvalue expressions are related as
+\begin{align}
+e^{\lambda_1 t} e^{\lambda_2 t} \varphi_1(\mathbf{x}) \varphi_2(\mathbf{x}) = e^{(\lambda_1 + \lambda_2)t} \varphi_1(\mathbf{x}) \varphi_2(\mathbf{x})
+\end{align}
+\item Another simple demonstration of the relationship between continuous-time and discrete-time eigenvalues is given by:
+\begin{align}
+\lim_{t \to 0} \frac{\mathcal{K}_t \varphi(\mathbf{x}) - \varphi(\mathbf{x})}{t} = \lim_{t \to 0} \frac{e^{\lambda t} \varphi(\mathbf{x}) - \varphi(\mathbf{x})}{t} = \lambda \varphi(\mathbf{x})
+\end{align}
+\item In some cases, we may measure the entire state of a \textbf{high-dimensional} spatial system, such as an evolving fluid flow.
+\item These measurements may then be arranged in a vector $\mathbf{g}$:
+\begin{align}
+\mathbf{g}(\mathbf{x}) = \begin{bmatrix} g_1(\mathbf{x}) \\ g_2(\mathbf{x}) \\ \vdots \\ g_p(\mathbf{x}) \end{bmatrix}
+\end{align}
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item Each of the individual measurements may be expanded in terms of the eigenfunctions $\varphi_j(\mathbf{x})$
+\begin{align}
+g_i(\mathbf{x}) = \sum_{j=1}^{\infty} v_{ij} \varphi_j(\mathbf{x})
+\end{align}
+\item The vector of observables, $\mathbf{g}$, may be similarly expanded:
+\begin{align}
+\mathbf{g}(\mathbf{x}) = \begin{bmatrix} g_1(\mathbf{x}) \\ g_2(\mathbf{x}) \\ \vdots \\ g_p(\mathbf{x}) \end{bmatrix} = \sum_{j=1}^{\infty} \varphi_j(\mathbf{x}) \mathbf{v}_j
+\end{align}
+where $\mathbf{v}_j$ is the $j$th Koopman mode associated with the eigenfunction $\varphi_j$.
+\item The Koopman eigenfunctions are orthonormal for conservative systems, and it is possible to compute the Koopman modes $\mathbf{v}_j$ directly by projection:
+
+\end{itemize}
+\end{frame}
+%--------------------------------------------------
+\begin{frame}[plain]{}
+\begin{align}
+\mathbf{v}_j = \begin{bmatrix} \langle \varphi_j, g_1 \rangle \\ \langle \varphi_j, g_2 \rangle \\ \vdots \\ \langle \varphi_j, g_p \rangle \end{bmatrix}
+\end{align}
+where $\langle \cdot , \cdot \rangle$ is the standard inner product of functions in Hilbert space.
+\begin{itemize}
+\setlength\itemsep{1em}
+\item It is possible to represent the dynamics of the measurements $\mathbf{g}$ as follows:
+\begin{align}
+\mathbf{g}(\mathbf{x}_k) &= \mathcal{K}_{\Delta t}^k \mathbf{g}(\mathbf{x}_0) = \mathcal{K}_{\Delta t}^k \sum_{j=0}^{\infty} \varphi_j(\mathbf{x}_0) \mathbf{v}_j \nonumber \\
+&= \sum_{j=0}^{\infty} \mathcal{K}_{\Delta t}^k \varphi_j(\mathbf{x}_0) \mathbf{v}_j \nonumber \\
+&= \sum_{j=0}^{\infty} \lambda_j^k \varphi_j(\mathbf{x}_0) \mathbf{v}_j
+\end{align}
+\item Often, it is possible to approximate this expansion as a truncated sum of only a few dominant terms.
+\end{itemize}\end{frame}
 %--------------------------------------------------
 \begin{frame}[plain]{}
 \begin{itemize}
