@@ -68,7 +68,7 @@
 \section{Motivation \& Problem Setup}
 % ══════════════════════════════════════════════════════════════════════════════
 
-\begin{frame}{The Control Design Challenge}
+\begin{frame}{Virtual Reference Feedback Tuning (VRFT)}
   \begin{columns}[T]
     \begin{column}{0.55\textwidth}
       \begin{block}{Classical Paradigm}
@@ -160,10 +160,10 @@
     \]
   \end{block}
 
-  \vspace{0.3em}
+%  \vspace{0.3em}
 
   \begin{columns}[T]
-    \begin{column}{0.48\textwidth}
+    \begin{column}{0.4\textwidth}
       \begin{exampleblock}{Key Observation}
         \begin{itemize}
           \item Tracking error: $e(t) = \bar{r}(t) - y(t)$
@@ -173,7 +173,7 @@
         \end{itemize}
       \end{exampleblock}
     \end{column}
-    \begin{column}{0.48\textwidth}
+    \begin{column}{0.4\textwidth}
       \begin{alertblock}{Reduction to Identification}
         Finding $C(z;\theta)$ such that
         \[ C(z;\theta)\,e(t) \approx u(t) \]

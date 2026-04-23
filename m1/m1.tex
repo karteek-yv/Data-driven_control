@@ -926,7 +926,7 @@ where $\langle \cdot , \cdot \rangle$ is the standard inner product of functions
 
 \begin{frame}{The Control Design Challenge}
   \begin{columns}[T]
-    \begin{column}{0.55\textwidth}
+    \begin{column}{0.5\textwidth}
       \begin{block}{Classical Paradigm}
         \begin{enumerate}
           \item Perform plant experiments
@@ -962,7 +962,7 @@ where $\langle \cdot , \cdot \rangle$ is the standard inner product of functions
 % ─────────────────────────────────────────────────────────────────────────────
 \begin{frame}{Problem Formulation}
   \begin{columns}[T]
-    \begin{column}{0.55\textwidth}
+    \begin{column}{0.5\textwidth}
       \textbf{Assumptions}
       \begin{itemize}
         \item Plant: linear SISO discrete-time system with \emph{unknown} transfer function $P(z)$
@@ -1016,10 +1016,10 @@ where $\langle \cdot , \cdot \rangle$ is the standard inner product of functions
     \]
   \end{block}
 
-  \vspace{0.3em}
+%  \vspace{0.3em}
 
   \begin{columns}[T]
-    \begin{column}{0.48\textwidth}
+    \begin{column}{0.45\textwidth}
       \begin{exampleblock}{Key Observation}
         \begin{itemize}
           \item Tracking error: $e(t) = \bar{r}(t) - y(t)$
@@ -1029,10 +1029,9 @@ where $\langle \cdot , \cdot \rangle$ is the standard inner product of functions
         \end{itemize}
       \end{exampleblock}
     \end{column}
-    \begin{column}{0.48\textwidth}
+    \begin{column}{0.45\textwidth}
       \begin{alertblock}{Reduction to Identification}
-        Finding $C(z;\theta)$ such that
-        \[ C(z;\theta)\,e(t) \approx u(t) \]
+        Finding $C(z;\theta)$ such that $\displaystyle C(z;\theta)\,e(t) \approx u(t)$
         is a \textbf{standard regression problem} --- solvable with no knowledge of $P(z)$.
       \end{alertblock}
     \end{column}
