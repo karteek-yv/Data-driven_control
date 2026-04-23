@@ -1043,13 +1043,12 @@ where $\langle \cdot , \cdot \rangle$ is the standard inner product of functions
   \begin{block}{Three-Step Procedure \quad (noise-free case)}
     Given $\{u(t),\, y(t)\}_{t=1}^{N}$:
     \begin{enumerate}
-      \setlength{\itemsep}{0.6em}
+%      \setlength{\itemsep}{0.4em}
       \item \textbf{Compute virtual reference \& tracking error:}
         \[ \bar{r}(t): \quad y(t)=M(z)\bar{r}(t), \qquad e(t)=\bar{r}(t)-y(t) \]
       \item \textbf{Filter both signals with pre-filter $L(z)$:}
         \[ e_L(t) = L(z)\,e(t), \qquad u_L(t) = L(z)\,u(t) \]
-      \item \textbf{Solve a least-squares problem:}
-        \[ \hat{\theta}_N = \arg\min_\theta \; \frac{1}{N}\sum_{t=1}^{N}\bigl(u_L(t) - C(z;\theta)\,e_L(t)\bigr)^2 \]
+      \item \textbf{Solve a least-squares problem:} $\displaystyle \hat{\theta}_N = \arg\min_\theta \; \frac{1}{N}\sum_{t=1}^{N}\bigl(u_L(t) - C(z;\theta)\,e_L(t)\bigr)^2 $ \\
         Closed form: $\;\hat{\theta}_N = \left(\sum \varphi_L\varphi_L^T\right)^{-1}\sum \varphi_L\, u_L(t)$
         \quad where $\varphi_L(t)=\beta(z)\,e_L(t)$.
     \end{enumerate}
@@ -1062,7 +1061,7 @@ where $\langle \cdot , \cdot \rangle$ is the standard inner product of functions
 
 \begin{frame}{Why the Pre-Filter $L(z)$ Matters}
   \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
+    \begin{column}{0.55\textwidth}
       \begin{block}{Two Cost Functions}
         \textbf{Model-reference criterion:}
         \[
@@ -1077,7 +1076,7 @@ where $\langle \cdot , \cdot \rangle$ is the standard inner product of functions
         \]
       \end{block}
     \end{column}
-    \begin{column}{0.47\textwidth}
+    \begin{column}{0.38\textwidth}
       \begin{exampleblock}{Ideal (infeasible) choice}
         $J_{\mathrm{VR}} = J_{\mathrm{MR}}$ if:
         \[ |L|^2 = \frac{|M|^2|W|^2}{|1+PC(\theta)|^2}\frac{1}{\Phi_u} \]
@@ -1102,9 +1101,9 @@ where $\langle \cdot , \cdot \rangle$ is the standard inner product of functions
     Define $\tilde{C}(z) = C_0(z) - \beta^T(z)\bar{\theta}$\; (unexplained part).\\[0.4em]
     \textbf{Extended class:} $C^+(z;\theta^+) = \beta^+(z)^T\theta^+$, where $\beta^+ = [\beta_1,\ldots,\beta_n,\tilde{C}]^T$.
   \end{block}
-  \vspace{0.5em}
+%  \vspace{0.5em}
   \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
+    \begin{column}{0.45\textwidth}
       \begin{exampleblock}{Proposition 1}
         With $L(z)$ chosen as above:
         \begin{align*}
@@ -1114,7 +1113,7 @@ where $\langle \cdot , \cdot \rangle$ is the standard inner product of functions
         where $\hat{J}^+_{\mathrm{MR}}$ is the \emph{quadratic approximation} of $J^+_{\mathrm{MR}}$ around $\bar{\theta}^+$.
       \end{exampleblock}
     \end{column}
-    \begin{column}{0.47\textwidth}
+    \begin{column}{0.45\textwidth}
       \begin{block}{Interpretation}
         \begin{itemize}
           \item If $C_0 \in \{C(z;\theta)\}$: VRFT finds the \highlight{global optimum} of $J_{\mathrm{MR}}$ exactly
@@ -1134,27 +1133,22 @@ where $\langle \cdot , \cdot \rangle$ is the standard inner product of functions
   \begin{block}{Noise Model}
     Measured output: $\tilde{y}(t) = P(z)u(t) + d(t)$, where $u(\cdot)$ and $d(\cdot)$ are \textbf{uncorrelated} (open-loop data).
   \end{block}
-  \vspace{0.3em}
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \begin{block}{Asymptotic criterion — noisy case}
-        \small
+   \vspace{-0.5em}
+  \begin{block}{Asymptotic criterion — noisy case}
+       \small
         \[
           J_{\mathrm{VR}}(\theta) = \frac{1}{2\pi}\!\int \!\left[\frac{|P|^2|C(\theta)-C_0|^2|1-M|^2|L|^2}{|M|^2}\Phi_u + \frac{|C(\theta)|^2|P|^2|C_0|^2|L|^2}{\cdot}\Phi_d\right]d\omega
         \]
-        The extra noise term \alerttext{biases} the estimator!
-      \end{block}
-    \end{column}
-    \begin{column}{0.47\textwidth}
-      \begin{alertblock}{Solution: Instrumental Variables}
-        Replace the standard LS estimate with:
+       The extra noise term \alerttext{biases} the estimator!
+    \end{block}
+    \vspace{-0.5em}
+     \begin{alertblock}{Solution: Instrumental Variables}
+       Replace the standard LS estimate with:
         \[
           \hat{\theta}^{\mathrm{IV}}_N = \left(\sum \xi(t)\,\tilde{\varphi}_L^T\right)^{-1}\sum \xi(t)\,u_L(t)
         \]
         where $\xi(t)$ is a suitable \textbf{instrumental variable} uncorrelated with $d(t)$ but correlated with $\varphi_L(t)$.
       \end{alertblock}
-    \end{column}
-  \end{columns}
 \end{frame}
 
 % ─────────────────────────────────────────────────────────────────────────────
