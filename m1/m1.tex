@@ -1,5 +1,5 @@
 %\documentclass{beamer}
-\RequirePackage[2020-02-02]{latexrelease}
+%\RequirePackage[2020-02-02]{latexrelease}
 \documentclass[hyperref={pdfpagemode=FullScreen},aspectratio=169]{beamer}
 
 %    1610: 16:10
@@ -95,6 +95,8 @@
 \usetikzlibrary{shapes,arrows,positioning,calc}
 \usetikzlibrary{patterns,angles,quotes}
 \usepackage{circuitikz}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathreplacing,angles,quotes}
 
 \newsavebox\mybox
 \savebox\mybox{\tikz[color=red,opacity=0.1]\node{\small{Dr. Y. V. Karteek, SCEE, IIT Mandi}};}
@@ -1154,7 +1156,7 @@ where $\langle \cdot , \cdot \rangle$ is the standard inner product of functions
 % ─────────────────────────────────────────────────────────────────────────────
 \begin{frame}{Instrumental Variable Choices}
   \begin{columns}[T]
-    \begin{column}{0.48\textwidth}
+    \begin{column}{0.45\textwidth}
       \begin{exampleblock}{Choice 1: Repeated Experiment}
         \begin{itemize}
           \item Run plant again with \emph{same} input $\{u(t)\}$
@@ -1166,20 +1168,20 @@ where $\langle \cdot , \cdot \rangle$ is the standard inner product of functions
         \textbf{Cost:} Requires a second experiment
       \end{exampleblock}
     \end{column}
-    \begin{column}{0.48\textwidth}
+    \begin{column}{0.45\textwidth}
       \begin{exampleblock}{Choice 2: Plant Model (Preferred)}
         \begin{itemize}
           \item Identify high-order model $\hat{P}(z)$ from data (e.g.\ ARX)
           \item Simulate: $\hat{y}(t) = \hat{P}(z)u(t)$
           \item Use: $\xi(t) = \beta(z)L(z)(M^{-1}-1)\hat{y}(t)$
         \end{itemize}
-        \vspace{0.3em}
+%        \vspace{0.3em}
         \textbf{Guarantee:} Approximately unbiased\\[0.2em]
         \textbf{Note:} Model used \emph{only} for IV generation; its quality does not affect controller complexity
       \end{exampleblock}
     \end{column}
   \end{columns}
-  \vspace{0.4em}
+%  \vspace{0.4em}
   \begin{block}{Remark}
     Even when using Choice 2, VRFT remains \emph{essentially direct}: the identified model $\hat{P}(z)$ is a \textbf{nuisance parameter}, not the design basis.
   \end{block}
@@ -1189,7 +1191,7 @@ where $\langle \cdot , \cdot \rangle$ is the standard inner product of functions
 \begin{frame}{Complete VRFT Algorithm (with IV)}
   \begin{block}{Summary --- using plant identification for IV}
     \begin{enumerate}
-      \setlength{\itemsep}{0.45em}
+      \setlength{\itemsep}{1em}
       \item Set $L(z) = (1-M(z))\,M(z)\,W(z)\,U(z)^{-1}$, where $|U(e^{j\omega})|^2 = \Phi_u(\omega)$
       \item Compute filtered input: $u_L(t) = L(z)\,u(t)$
       \item Compute noisy regressors: $\tilde{\varphi}_L(t) = \beta(z)L(z)(M^{-1}(z)-1)\,\tilde{y}(t)$
@@ -1214,7 +1216,7 @@ where $\langle \cdot , \cdot \rangle$ is the standard inner product of functions
       \[
         P(z) = \frac{z^{-3}B(z)}{A(z)}, \quad T_s = 0.05\,\text{s}
       \]
-      \textbf{Objective:} Track angular position of 3rd pulley.\\[0.5em]
+      \textbf{Objective:} Track angular position of 3rd pulley.\\
       \textbf{Reference model:}
       \[
         M(z) = \frac{z^{-3}(1-\alpha)^2}{(1-\alpha z^{-1})^2}, \quad \alpha = e^{-T_s \omega_0}
@@ -1242,9 +1244,66 @@ where $\langle \cdot , \cdot \rangle$ is the standard inner product of functions
 \end{frame}
 
 % ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}
+\begin{figure}
+\begin{tikzpicture}[thick]
+
+% Radii
+\def\r{0.9}
+\def\rc{0.25}
+
+% Centers
+\coordinate (L) at (-3,0);
+\coordinate (R) at (3,0);
+\coordinate (T) at (0,3);
+
+% Draw pulleys
+\draw (L) circle (\r);
+\fill (L) circle (\rc);
+
+\draw (R) circle (\r);
+\fill (R) circle (\rc);
+
+\draw (T) circle (\r);
+\fill (T) circle (\rc);
+
+% Vertical shafts
+\draw (L) -- ++(0,-1.8);
+\draw (R) -- ++(0,-1.8);
+
+% Crossed belts (center)
+\draw (L) -- (T);
+\draw (T) -- (R);
+\draw (L) -- (R);
+
+% Stair-like connections (approximation)
+\draw[decorate,decoration={zigzag,segment length=6pt,amplitude=2pt}]
+    (L) -- (T);
+
+\draw[decorate,decoration={zigzag,segment length=6pt,amplitude=2pt}]
+    (T) -- (R);
+
+\draw[decorate,decoration={zigzag,segment length=6pt,amplitude=2pt}]
+    (L) -- (R);
+
+% Input arrow u(t)
+\draw[->] (-4.5,-1.2) -- (-3.5,-0.4);
+\node at (-3.7,-1.6) {$u(t)$};
+
+% Output arrow y(t)
+\draw[->] (4.5,-1.2) -- (3.5,-0.4);
+\node at (3.7,-1.6) {$y(t)$};
+
+\end{tikzpicture}
+\caption{Flexible transmission pulley system.}
+\end{figure}
+
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
 \begin{frame}{Simulation Results}
   \begin{columns}[T]
-    \begin{column}{0.32\textwidth}
+    \begin{column}{0.3\textwidth}
       \begin{block}{Case 1: $L(z)=1$}
         \centering
         \vspace{0.2em}
@@ -1257,7 +1316,7 @@ where $\langle \cdot , \cdot \rangle$ is the standard inner product of functions
         \alerttext{Poor tracking} — control system differs markedly from $M(z)$
       \end{block}
     \end{column}
-    \begin{column}{0.32\textwidth}
+    \begin{column}{0.3\textwidth}
       \begin{block}{Case 2: Optimal $L(z)$}
         \centering
         \vspace{0.2em}
@@ -1272,7 +1331,7 @@ where $\langle \cdot , \cdot \rangle$ is the standard inner product of functions
         \quad\emph{Sub-optimality $<1\%$}
       \end{block}
     \end{column}
-    \begin{column}{0.32\textwidth}
+    \begin{column}{0.3\textwidth}
       \begin{block}{Case 3: Noisy + IV}
         \centering
         \vspace{0.2em}
