@@ -1,5 +1,5 @@
 %\documentclass{beamer}
-%\RequirePackage[2020-02-02]{latexrelease}
+\RequirePackage[2020-02-02]{latexrelease}
 \documentclass[hyperref={pdfpagemode=FullScreen},aspectratio=169]{beamer}
 
 %    1610: 16:10
@@ -1303,53 +1303,57 @@ where $\langle \cdot , \cdot \rangle$ is the standard inner product of functions
 % ─────────────────────────────────────────────────────────────────────────────
 \begin{frame}{Simulation Results}
   \begin{columns}[T]
-    \begin{column}{0.3\textwidth}
+    \begin{column}{0.45\textwidth}
       \begin{block}{Case 1: $L(z)=1$}
         \centering
-        \vspace{0.2em}
-        \begin{tikzpicture}
-          \draw[accentblue!40, thick] (0,0) -- (0.4,0.6) -- (0.7,1.2) -- (1.0,0.5) -- (1.3,1.3) -- (1.6,0.8) -- (2.0,1.0);
-          \draw[darkblue, thick, dashed] (0,0) .. controls (0.5,1.1) and (1.0,1.0) .. (2.0,1.0);
-          \node[font=\tiny] at (1.0,-0.25) {Time};
-        \end{tikzpicture}\\
+        \begin{figure}
+        \includegraphics[scale=0.18]{fig3.jpg}
+        \end{figure}
         $J_{\mathrm{MR}} = 0.232$\\[0.2em]
         \alerttext{Poor tracking} — control system differs markedly from $M(z)$
       \end{block}
     \end{column}
-    \begin{column}{0.3\textwidth}
+    \begin{column}{0.45\textwidth}
       \begin{block}{Case 2: Optimal $L(z)$}
         \centering
-        \vspace{0.2em}
-        \begin{tikzpicture}
-          \draw[accentblue!40, thick] (0,0) .. controls (0.5,1.05) and (0.9,1.02) .. (2.0,1.0);
-          \draw[darkblue, thick, dashed] (0,0) .. controls (0.5,1.08) and (1.0,1.0) .. (2.0,1.0);
-          \node[font=\tiny] at (1.0,-0.25) {Time};
-        \end{tikzpicture}\\
+        \begin{figure}
+        \includegraphics[scale=0.18]{fig4.jpg}
+        \end{figure}
         $J_{\mathrm{MR}} = 0.0343$\\[0.2em]
         \highlight{Near-perfect tracking}\\[0.2em]
         Optimal: $J_{\mathrm{MR}}(\bar\theta)=0.0340$
         \quad\emph{Sub-optimality $<1\%$}
       \end{block}
     \end{column}
-    \begin{column}{0.3\textwidth}
-      \begin{block}{Case 3: Noisy + IV}
+  \end{columns}
+  \vspace{0.4em}
+  \centering
+  \small\textit{(Schematic step-response illustrations; solid = achieved, light = reference model $M(z)$)}
+\end{frame}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\begin{frame}
+  \begin{columns}[T]
+    \begin{column}{0.45\textwidth}
+    \begin{block}{Case 3: Optimal $L(z)$ with noise and without IV}
         \centering
-        \vspace{0.2em}
-        \begin{tikzpicture}
-          \draw[alertred!60, thick] (0,0) .. controls (0.3,0.4) and (0.5,1.4) .. (0.8,1.05) -- (2.0,1.0);
-          \draw[darkblue, thick, dashed] (0,0) .. controls (0.5,1.08) and (1.0,1.0) .. (2.0,1.0);
-          \node[font=\tiny] at (1.0,-0.25) {Time};
-        \end{tikzpicture}\\
-        Without IV: degraded\\[0.2em]
+        \begin{figure}
+        \includegraphics[scale=0.25]{fig5.jpg}
+        \end{figure}
+        \highlight{Without IV:} performance degraded
+      \end{block}
+      \end{column}
+      \begin{column}{0.45\textwidth}
+      \begin{block}{Case 4: Optimal $L(z)$ with noise + IV}
+        \centering
+        \begin{figure}
+        \includegraphics[scale=0.25]{fig6.jpg}
+        \end{figure}
         \highlight{With IV (ARX model):} performance nearly restored to Case 2
       \end{block}
     \end{column}
   \end{columns}
-  \vspace{0.4em}
-  \centering
-  \small\textit{(Schematic step-response illustrations; solid = achieved, dashed = reference model $M(z)$)}
 \end{frame}
-
 % ══════════════════════════════════════════════════════════════════════════════
 \section{Comparison \& Conclusions}
 % ══════════════════════════════════════════════════════════════════════════════
